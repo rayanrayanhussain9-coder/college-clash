@@ -75,7 +75,7 @@ export function buildComparison(selected) {
     // Do not turn missing official data into a fake zero. If one of the
     // compared colleges has not published a metric, show the row as
     // information-only and leave it out of the winner calculation.
-    if (values.some((value) => value == null || value === "" || Number.isNaN(value))) {
+    if (values.some((value) => !Number.isFinite(value))) {
       return {
         ...factor,
         scored: false,
@@ -120,7 +120,7 @@ export function buildComparison(selected) {
     .map((c) => ({
       college: c,
       total: totals[c.id],
-      score10: (totals[c.id] / factors.filter((factor) => factor.scored).length) * 10,
+      score10: (totals[c.id] / Math.max(1, factors.filter((factor) => factor.scored).length)) * 10,
       wins: winCounts[c.id],
     }))
     .sort((a, b) => b.total - a.total)
@@ -129,7 +129,7 @@ export function buildComparison(selected) {
   return {
     factors,
     ranking,
-    winner: ranking[0] || null,
+    winner: factors.some((factor) => factor.scored) ? ranking[0] : null,
     scoredCount: factors.filter((factor) => factor.scored).length,
   };
 }

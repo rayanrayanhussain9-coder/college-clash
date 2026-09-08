@@ -1,7 +1,7 @@
 # CollegeClash
 
 Compare Indian engineering colleges head-to-head across 15 factors with a
-cinematic dark + neon UI. Public site is read-only; a hidden single-admin
+minimal warm-white and charcoal UI. Public site is read-only; a hidden single-admin
 panel (footer → "CollegeClash" click → login) edits data in Supabase.
 
 **Live:** https://collegeclash.netlify.app · **Supabase:** https://clribazrtqivckjkinqz.supabase.co
@@ -93,7 +93,8 @@ weighted mean of normalised scored factors (12 today), scaled to /10.
 - Functional components + hooks; hooks live in `src/lib`, UI in `src/components`.
 - Styling: add classes to `index.css` using the existing tokens
   (`--bg --ink --muted --neon1 --neon2 --good --bad --glass --glass-bd`).
-  Dark + neon look is a locked design decision — don't redesign.
+  Use warm white surfaces, charcoal text, restrained green controls and subtle
+  green/red comparison outcomes. Avoid neon text, glows and animated gradients.
 - Images: always two sizes (`image` ~1100px, `thumb` ~320px) as **direct**
   wikimedia CDN URLs. Never `Special:FilePath?width=` (double-redirect, no
   cache — caused a real perf bug). Missing image = "" → gradient fallback.

@@ -21,7 +21,8 @@ const MAX = 4;
 export default function App() {
   const { colleges, reload } = useColleges();
   const { isAdmin } = useAuth();
-  const [selected, setSelected] = useState([]);
+  const [selection, setSelected] = useState([]);
+  const selected = useMemo(() => selection.map((item) => colleges.find((c) => c.id === item.id)).filter(Boolean), [selection, colleges]);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
@@ -104,7 +105,7 @@ export default function App() {
         />
       )}
 
-      {adminOpen && (
+      {adminOpen && isAdmin && (
         <AdminPanel
           colleges={colleges}
           onClose={() => setAdminOpen(false)}

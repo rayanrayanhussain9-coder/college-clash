@@ -18,7 +18,7 @@ export function useColleges() {
       return;
     }
     const { data, error } = await supabase.from("colleges").select("*");
-    if (error || !data || data.length === 0) {
+    if (error || !data) {
       setColleges(COLLEGES);
       setSource("fallback");
     } else {
