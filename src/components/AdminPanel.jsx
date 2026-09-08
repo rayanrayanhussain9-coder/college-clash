@@ -21,6 +21,7 @@ export default function AdminPanel({ colleges, onClose, onChanged }) {
   const [search, setSearch] = useState("");
   const [specialityText, setSpecialityText] = useState("");
   const [originalId, setOriginalId] = useState(null);
+  const [packageUnits, setPackageUnits] = useState({});
 
   const startNew = () => { setMsg(""); setOriginalId(null); setSpecialityText(""); setEditing({ ...EMPTY, factors: blankFactors() }); };
   const startEdit = (c) => { setMsg(""); setOriginalId(c.id); setSpecialityText((c.specialities || []).join("\n")); setEditing(JSON.parse(JSON.stringify(c))); };
@@ -130,9 +131,18 @@ export default function AdminPanel({ colleges, onClose, onChanged }) {
                 <input
                   type={f.type === "text" ? "text" : "number"}
                   step="any"
-                  value={editing.factors[f.key] ?? ""}
-                  onChange={(e) => setFactor(f.key, f.type === "text" ? e.target.value : (e.target.value === "" ? null : Number(e.target.value)))}
+                  min={f.type === "text" ? undefined : 0}
+                  value={editing.factors[f.key] == null ? "" : f.type === "money" && packageUnits[f.key] === "CPA" ? Number((editing.factors[f.key] / 100).toFixed(8)) : editing.factors[f.key]}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    const multiplier = f.type === "money" && packageUnits[f.key] === "CPA" ? 100 : 1;
+                    setFactor(f.key, f.type === "text" ? raw : raw === "" ? null : Number((Number(raw) * multiplier).toFixed(8)));
+                  }}
                 />
+                {f.type === "money" && <select aria-label={`${f.label} unit`} value={packageUnits[f.key] || "LPA"} onChange={(e) => setPackageUnits((units) => ({ ...units, [f.key]: e.target.value }))}>
+                  <option value="LPA">LPA — lakhs per annum</option>
+                  <option value="CPA">CPA — crores per annum</option>
+                </select>}
               </label>
             ))}
             <label>Fees range label (e.g. ₹8–10 L)

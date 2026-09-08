@@ -8,16 +8,19 @@ export default function BackgroundCarousel({ slides }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (slides.length < 2) return;
     const t = setInterval(() => setIndex((i) => (i + 1) % slides.length), 5000);
     return () => clearInterval(t);
   }, [slides.length]);
 
-  const current = slides[index];
+  const activeIndex = slides.length ? index % slides.length : 0;
+  const current = slides[activeIndex];
+  if (!current) return null;
 
   return (
     <div className="bg-carousel" aria-hidden="true">
       {slides.map((s, i) => (
-        <div key={s.id} className={`bg-slide ${i === index ? "active" : ""}`}>
+        <div key={s.id} className={`bg-slide ${i === activeIndex ? "active" : ""}`}>
           <CollegeImage college={s} className="fill" eager />
         </div>
       ))}

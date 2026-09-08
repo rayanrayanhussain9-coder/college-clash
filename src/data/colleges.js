@@ -29,7 +29,10 @@ export const FACTORS = [
   { key: "location",       label: "Location",              type: "text" },
 ];
 
+import { IIITS } from "./iiits.js";
+
 export const COLLEGES = [
+  ...IIITS,
   {
     id: "iit-madras", name: "IIT Madras", city: "Chennai, Tamil Nadu",
     type: "Engineering & Technology", accent: "#00e0ff",

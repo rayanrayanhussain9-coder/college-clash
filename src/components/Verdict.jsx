@@ -3,7 +3,7 @@ import { Trophy, Medal } from "lucide-react";
 
 export default function Verdict({ comparison }) {
   const { winner, ranking } = comparison;
-  if (!winner) return null;
+  if (!winner) return <p className="empty-state">There is not enough verified numerical data for these colleges to determine a winner yet.</p>;
 
   const topScore = ranking[0].score10;
 
